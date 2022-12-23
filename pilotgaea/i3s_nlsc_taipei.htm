@@ -5,9 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <meta charset="utf-8" />
-    <script src="./PGWeb3D.min.js"></script>
+    <script src="https://samplecode.pilotgaea.com.tw/src/PGWebJS/13.0/PGWeb3D.min.js"></script>
     <!--引入-->
-    <link rel="stylesheet" type="text/css" href="./PGWeb3D.css" />
+    <link rel="stylesheet" type="text/css" href="https://samplecode.pilotgaea.com.tw/src/PGWebJS/13.0/css/PGWeb3D.css" />
 </head>
 
 <body onload="Init();">
@@ -36,7 +36,7 @@
                             }
                         }
                         else {
-                            console.error("add3DTilesLayer failed.");
+                            console.error("addI3SLayer failed.");
                         }
                     }
                 }
@@ -91,8 +91,8 @@
             // 在使用其他圖層前必須要先讀入地形 其他圖層的新增都會在callback中
             terrainview.openTerrain(
                 {
-                    url: "http://127.0.0.1:8080",
-                    identifier: "terrain",
+                    url: "https://samplecode.pilotgaea.com.tw/src/PGWebJS/13.0/oviewRP.ashx",
+                    identifier: "%E7%AF%84%E4%BE%8B%E5%9C%B0%E5%BD%A2%E5%9C%96",
                     // urlTemplate: "{URL}",
                     callback: openCallback
                 }

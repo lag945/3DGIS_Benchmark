@@ -5,9 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <meta charset="utf-8" />
-    <script src="./PGWeb3D.min.js"></script>
+    <script src="https://samplecode.pilotgaea.com.tw/src/PGWebJS/13.0/PGWeb3D.min.js"></script>
     <!--引入-->
-    <link rel="stylesheet" type="text/css" href="./PGWeb3D.css" />
+    <link rel="stylesheet" type="text/css" href="https://samplecode.pilotgaea.com.tw/src/PGWebJS/13.0/css/PGWeb3D.css" />
 </head>
 
 <body onload="Init();">
@@ -20,15 +20,13 @@
     <div id="MyMap" style="width:100%;height:100%;position:absolute;top:0;left:0"></div>
 
     <script>
-        var acute3d = null;
         var terrainview = null;
 
-        function add3DTiles(url, goto) {
-            terrainview.add3DTilesLayer(
+        function add3DTLayer(url, goto) {
+            terrainview.addOGC3DTilesLayer(
                 {
                     url: url,
-                    urlTemplate: "{URL}",
-                    // maximumScreenSpaceError: 1,
+					useDracoDecode: true,
                     callback: function (success, layer) {
                         if (success) {
                             if (goto) {
@@ -45,20 +43,24 @@
 
         function openCallback(result) {
             // 初始化地形參數
-            terrainview.terrainAlpha = 0.5;
+            //terrainview.terrainAlpha = 0.5;
             terrainview.keepDraw = true;
             terrainview.controlPanel = false;
-            // terrainview.drawTerrainSetting = {noElevation:true};
-            terrainview.setFov(65);//學cesium預設值
+			// ESRI代理不成功，放棄，當作關高程
+            terrainview.drawTerrainSetting = {noElevation:true};
+			//https://developers.arcgis.com/javascript/latest/api-reference/esri-Camera.html#fov
+			//官方說預設55度
+			//實測53度比較接近
+            terrainview.setFov(53);
             // 設定底圖
             terrainview.setBaseLayer({
                 url: "OSM",
-                identifier: "",
+                identifier: "IMAGE",
                 urlTemplate: "{URL}"
             });
 
             // 設定初始位置
-            let initialPos = new GeoPoint(121.76318542571596, 25.139347351286972, 14000);
+            let initialPos = new GeoPoint(121.5476849751472, 25.026531010212537, 5000);
             let initialV = new Geo3DPoint(0, 0, -1);
             let initialUp = new Geo3DPoint(0, 1, 0);
             let initialCamera = new ov.Camera(initialPos, initialV, initialUp);
@@ -77,7 +79,8 @@
             }
                 , 200);
 
-            add3DTiles("https://3dtiles.nlsc.gov.tw/building/tiles3d/2/tileset.json");
+            
+            add3DTLayer("https://3dtiles.nlsc.gov.tw/building/tiles3d/0/tileset.json");
         }
 
 
@@ -86,8 +89,8 @@
             // 在使用其他圖層前必須要先讀入地形 其他圖層的新增都會在callback中
             terrainview.openTerrain(
                 {
-                    url: "http://127.0.0.1:8080",
-                    identifier: "terrain",
+                    url: "https://samplecode.pilotgaea.com.tw/src/PGWebJS/13.0/oviewRP.ashx",
+                    identifier: "%E7%AF%84%E4%BE%8B%E5%9C%B0%E5%BD%A2%E5%9C%96",
                     // urlTemplate: "{URL}",
                     callback: openCallback
                 }
