@@ -9,7 +9,7 @@
 | I3S  | NA | [Go](https://lag945.github.io/3DGIS_Benchmark/arcgis/i3s_nlsc_taipei.htm) |[Go](https://lag945.github.io/3DGIS_Benchmark/pilotgaea/i3s_nlsc_taipei.htm) |
 | PGDB  | NA | NA |[Go](https://3dmaps.nlsc.gov.tw/) |
 
-# How to browser PilotGaea native PGDB
+# How to browse PilotGaea native PGDB
 1. go to https://3dmaps.nlsc.gov.tw/
 1. click 進入地圖
 1. click 圖層列表 in the upper left corner
