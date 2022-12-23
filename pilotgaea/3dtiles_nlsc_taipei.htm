@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="./PGWeb3D.min.js"></script>
+    <!--引入-->
+    <link rel="stylesheet" type="text/css" href="./PGWeb3D.css" />
+</head>
+
+<body onload="Init();">
+
+    <div id="MyControl" style="position: relative;z-index:1;color: white;background-color:transparent; float: right;padding-top: 100px;">
+        <label id="label_fps" style="color: greenyellow;font-size:60px;text-shadow: 4px 4px 8px black;text-align: right;">60 FPS</label>
+        <!-- <input type="checkbox" id="aq3denable" checked> -->
+    </div>
+
+    <div id="MyMap" style="width:100%;height:100%;position:absolute;top:0;left:0"></div>
+
+    <script>
+        var acute3d = null;
+        var terrainview = null;
+
+        function add3DTiles(url, goto) {
+            terrainview.add3DTilesLayer(
+                {
+                    url: url,
+                    urlTemplate: "{URL}",
+                    // maximumScreenSpaceError: 1,
+                    callback: function (success, layer) {
+                        if (success) {
+                            if (goto) {
+                                layer.goto();
+                            }
+                        }
+                        else {
+                            console.error("add3DTilesLayer failed.");
+                        }
+                    }
+                }
+            );
+        }
+
+        function openCallback(result) {
+            // 初始化地形參數
+            terrainview.terrainAlpha = 0.5;
+            terrainview.keepDraw = true;
+            terrainview.controlPanel = false;
+            // terrainview.drawTerrainSetting = {noElevation:true};
+            terrainview.setFov(65);//學cesium預設值
+            // 設定底圖
+            terrainview.setBaseLayer({
+                url: "OSM",
+                identifier: "",
+                urlTemplate: "{URL}"
+            });
+
+            // 設定初始位置
+            let initialPos = new GeoPoint(121.76318542571596, 25.139347351286972, 14000);
+            let initialV = new Geo3DPoint(0, 0, -1);
+            let initialUp = new Geo3DPoint(0, 1, 0);
+            let initialCamera = new ov.Camera(initialPos, initialV, initialUp);
+            terrainview.gotoCamera(initialCamera, false);
+
+            // show FPS
+            setInterval(function () {
+                let fps = parseInt(terrainview.getFPS());
+                label_fps.innerHTML = fps + " FPS";
+                if(fps<30){                    
+                    label_fps.style.color = "red";
+                }
+                else{
+                    label_fps.style.color = "greenyellow";
+                }
+            }
+                , 200);
+
+            add3DTiles("https://3dtiles.nlsc.gov.tw/building/tiles3d/2/tileset.json");
+        }
+
+
+        function Init() {
+            terrainview = new ov.TerrainView("MyMap");
+            // 在使用其他圖層前必須要先讀入地形 其他圖層的新增都會在callback中
+            terrainview.openTerrain(
+                {
+                    url: "http://127.0.0.1:8080",
+                    identifier: "terrain",
+                    // urlTemplate: "{URL}",
+                    callback: openCallback
+                }
+            );
+        }
+
+    </script>
+
+</body>
+
+</html>
