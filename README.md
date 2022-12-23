@@ -13,4 +13,4 @@
 1. go to https://3dmaps.nlsc.gov.tw/
 1. click 進入地圖
 1. click 圖層列表 in the upper left corner
-  - 3維圖層 -> 3D建物 -> 臺北市 -> 110_臺北市 -> 已選圖層 -> 定位
+1. 3維圖層 -> 3D建物 -> 臺北市 -> 110_臺北市 -> 已選圖層 -> 定位
