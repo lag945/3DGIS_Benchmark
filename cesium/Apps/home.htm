@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+    <title>Cesium BuildingViewer</title>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js"></script>
+    <script src="https://webgl2fundamentals.org/webgl/resources/webgl-lessons-ui.js"></script>
+    <link type="text/css" href="https://webgl2fundamentals.org/webgl/resources/webgl-tutorials.css" rel="stylesheet" />
+    <style>
+        @import url(https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Widgets/widgets.css);
+
+        html,
+        body,
+        #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <div id="uiContainer">
+        <div id="ui">
+        </div>
+    </div>
+    <script>
+
+        const settings = {
+            height: 50,
+            heading: 45,
+            pitch: 0,
+        };
+
+
+        async function add3DTiles(url, goto) {
+            try {
+                const tileset = await Cesium.Cesium3DTileset.fromUrl(url);
+
+                viewer.scene.primitives.add(tileset);
+                if (goto) {
+                    viewer.zoomTo(tileset);
+                }
+
+            } catch (error) {
+                console.error(`Failed to created terrain: ${error}`);
+            }
+
+        }
+
+        function initUI() {
+            webglLessonsUI.setupUI(document.querySelector('#ui'), settings, [
+                { type: 'slider', key: 'height', min: -500, max: 500, precision: 2, step: 2, change: locate, },
+                { type: 'slider', key: 'heading', min: 0, max: 360, precision: 2, step: 1, change: locate, },
+                { type: 'slider', key: 'pitch', min: -90, max: 90, precision: 2, step: 1, change: locate, },
+            ]);
+        }
+
+        let viewer = null;
+        async function main() {
+            Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNjRjOGNkOC1kMTM1LTRiNGUtYWU5ZC00MzZmZDExMWQxOGIiLCJpZCI6MTM1MjIxLCJpYXQiOjE2ODQxNDA3NTF9.V4yHH8iAtO3P0eb-QV2a3tFbeE74YFVkfeN_uL9U9kw";
+            viewer = new Cesium.Viewer('cesiumContainer', {
+                terrainProvider: await Cesium.createWorldTerrainAsync(),
+                infoBox: true,
+                //selectionIndicator: false,
+                //shadows: true,
+                shouldAnimate: true,
+            });
+
+            initUI();
+            add3DTiles("https://3dtiles.nlsc.gov.tw/building/tiles3d/7/tileset.json");
+            // 飛去指定處
+            locate();
+
+            let positionData = [];
+            let shape = viewer.entities.add({
+                polyline: {
+                    positions: positionData,
+                    clampToGround: true,
+                    width: 3,
+                }
+            });
+
+        }
+
+        let target = [121.166196, 24.960313];
+        function locate() {
+            let baseH = 126;
+            viewer.camera.setView({
+                destination: Cesium.Cartesian3.fromDegrees(target[0], target[1], baseH + settings.height),
+                orientation: {
+                    heading: Cesium.Math.toRadians(settings.heading),
+                    pitch: Cesium.Math.toRadians(settings.pitch),
+                    roll: 0.0
+                }
+            });
+        }
+
+        function view(building) {
+            if (building == "A6") {
+                target[0] = 121.166196;
+                target[1] = 24.960313;
+                settings.height = 50;
+                settings.heading = 45;
+            }
+            else if (building == "B6") {
+                target[0] = 121.165716;
+                target[1] = 24.960535;
+                settings.height = 50;
+                settings.heading = 360 - 45;
+            }
+            else if (building == "A5") {
+                target[0] = 121.166368;
+                target[1] = 24.960166;
+                settings.height = 50;
+                settings.heading = 45;
+            }
+            else if (building == "A7") {
+                target[0] = 121.166140;
+                target[1] = 24.960387;
+                settings.height = 50;
+                settings.heading = 45;
+            }
+
+            settings.pitch = 0;
+            locate();
+        }
+
+        main();
+
+    </script>
+</body>
+
+</html>
