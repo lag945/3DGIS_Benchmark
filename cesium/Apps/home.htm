@@ -9,9 +9,9 @@
     <title>Cesium BuildingViewer</title>
     <script src="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js"></script>
     <script src="https://webgl2fundamentals.org/webgl/resources/webgl-lessons-ui.js"></script>
-    <link type="text/css" href="https://webgl2fundamentals.org/webgl/resources/webgl-tutorials.css" rel="stylesheet" />
     <style>
         @import url(https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Widgets/widgets.css);
+        @import url(https://webgl2fundamentals.org/webgl/resources/webgl-tutorials.css);
 
         html,
         body,
@@ -22,7 +22,10 @@
             padding: 0;
             overflow: hidden;
             position: absolute;
-        }
+        },
+        #uiContainer {
+            top: 100;
+        },        
     </style>
 </head>
 
