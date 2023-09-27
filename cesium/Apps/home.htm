@@ -78,7 +78,7 @@
             initUI();
             add3DTiles("https://3dtiles.nlsc.gov.tw/building/tiles3d/7/tileset.json");
             // 飛去指定處
-            locate();
+            view("A7");
 
             let positionData = [];
             let shape = viewer.entities.add({
@@ -126,7 +126,7 @@
             else if (building == "A7") {
                 target[0] = 121.166140;
                 target[1] = 24.960387;
-                settings.height = 50;
+                settings.height = 31;
                 settings.heading = 45;
             }
 
